@@ -1,0 +1,130 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.pad-size {
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    width: 100%;
+    height: 100vh;
+    flex-direction: row;
+}
+
+.pad-size .container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+}
+
+.pad-size .container:nth-child(1) {
+    background-color: #c5dcc2;
+    color: rgb(65, 65, 65);
+}
+
+.pad-size .container:nth-child(2) {
+    background-color: #91b38e;
+    color: #FFF;
+}
+
+.pad-size .container:nth-child(3) {
+    background-color: #5a855f;
+    color: #FFF;
+}
+
+.pad-qty {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+.pad-qty p {
+    font-size: 2rem;
+    width: 100%;
+    color: rgb(65, 65, 65);
+    text-align: center;
+    font-weight: 600;
+    padding-bottom: 30px;
+}
+
+.pad-qty button {
+    padding: 30px;
+    background-color: #5a855f;
+    border: 1px solid #FFF;
+    color: #FFF;
+    font-size: 3rem;
+    min-width: 20%;
+}
+
+.pad-qty input {
+    padding: 30px;
+    background-color: #FFF;
+    color: #5a855f;
+    font-size: 3rem;
+    border: 1px solid #FFF;
+    text-align: center;
+}
+
+.check-out-btn {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    border: none !important;
+    background-color: #4169E1 !important;
+}
+
+.pad-pay {
+    display: none;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+.pad-pay .container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-weight: 600;
+    color: #000;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.pad-pay .container:nth-child(1) {
+    background-color: #4169E1;
+    color: #FFF;
+}
+
+.pad-pay .container:nth-child(2) {
+    background-color: #4169E169;
+    color: rgb(65, 65, 65);
+}
+
+.pad-pay .container:nth-child(3) {
+    background-color: #8c2423;
+    color: #FFF;
+}
+
+.pad-pay .size,
+.pad-pay .qty {
+    font-size: 2rem;
+    color: #FFF;
+}
