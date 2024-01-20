@@ -128,3 +128,28 @@
     font-size: 2rem;
     color: #FFF;
 }
+
+.rfid-scan {
+    background-color: #c5dcc2;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 20px;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.cancel-btn {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    border: none !important;
+    background-color: #888 !important;
+    padding: 30px;
+    color: #FFF;
+    font-size: 3rem;
+}

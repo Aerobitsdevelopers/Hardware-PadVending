@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Vending</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body onload="QRPay()">
+    <div class="rfid-scan">
+        <button class="cancel-btn" onclick="window.location.href='./';">Cancel</button>
+        <img src={{ url_for('static', filename='images/frame.png' ) }} alt="QR code" />
+        <h1>Scan QR To Pay</h1>
+        <p>will automatically dispence once payment confirmed</p>
+    </div>
+    <script src="./js/choice.js" async defer></script>
+</body>
+
+</html>
