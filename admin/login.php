@@ -10,24 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $myusernameformatted = strtolower(preg_replace('/\s+/', '', $myusername));
 
-    $result = $mysqli->query("SELECT id,username,passcode,criteria FROM admin WHERE username = '$myusernameformatted' AND active = 1");
+    $result = $mysqli->query("SELECT id,username,password FROM admin WHERE username = '$myusernameformatted' AND active = 1");
 
     if ($result) {
         $count = mysqli_num_rows($result);
         $row = mysqli_fetch_array($result);
-        if ($count == 1 && password_verify($mypassword, $row['passcode'])) {
-            if ($row['criteria'] != null || $row['criteria'] != '') {
-                $_SESSION['login_user'] = $myusernameformatted;
-                if ($row['criteria'] == 'admin') {
-                    header("location: control/index.php");
-                } else {
-                    $timestamp = date("d/m/y - h:i:s");
-                    $mysqli->query("UPDATE admin SET login = '$timestamp' WHERE username = '$myusernameformatted'");
-                    header("location: index.php");
-                }
-            } else {
-                $error = "No Criteria Assigned to this Account";
-            }
+        if ($count == 1 && password_verify($mypassword, $row['password'])) {
+            $_SESSION['login_user'] = $myusernameformatted;
+            header("location: index.php");
         } else {
             $error = "Invalid Credentials";
         }
@@ -60,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
         <img class="logo-container" src="./images/logo.png">
         <!-- <div class="copyright">
-            &copy; 2023 ASIET. All Rights Reserved. Designed by <a style="text-decoration: none;color: #2980B9;" href="http://aerodevelopers.com/" target="_blank">Aerobits Developers</a><br>
+            &copy; 2023 Company Name. All Rights Reserved. Designed by <a style="text-decoration: none;color: #2980B9;" href="http://aerodevelopers.com/" target="_blank">Aerobits Developers</a><br>
         </div> -->
     </div>
 </body>
