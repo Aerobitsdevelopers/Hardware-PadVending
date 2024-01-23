@@ -1,50 +1,47 @@
-<!DOCTYPE html>
+<?php
+require 'config.php';
+if(isset($_GET['size']) && isset($_GET['qty']) && isset($_GET['payment'])){
+    $id = date("ymdHis");
+    $size = mysqli_real_escape_string($mysqli, $_GET['size']);
+    $qty = mysqli_real_escape_string($mysqli, $_GET['qty']);
+    $payment = mysqli_real_escape_string($mysqli, $_GET['payment']);
+    
+    switch($size){
+        case 'regular':
+            $control_id = 1;
+            break;
+        case 'large':
+            $control_id = 2;
+            break;
+        case 'night':
+            $control_id = 3;
+            break;
+        default:
+            $control_id = 1;
+    }
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <?php
-        require 'config.php';
-        if(isset($_GET['size']) && isset($_GET['qty']) && isset($_GET['payment'])){
-            $id = date("ymdHis");
-            $size = mysqli_real_escape_string($mysqli, $_GET['size']);
-            $qty = mysqli_real_escape_string($mysqli, $_GET['qty']);
-            $payment = mysqli_real_escape_string($mysqli, $_GET['payment']);
-           
-            $mysqli->query("INSERT INTO transactions (
-                id,
-                size,	
-                qty,	
-                payment) 
-                VALUES (
-                '$id',
-                '$size',	
-                $qty,	
-                '$payment')") or die(mysqli_error($mysqli));
+    $result = $mysqli->query("SELECT * FROM control WHERE id = $control_id");
+    if ($result) {
+        $row = $result->fetch_assoc();
+        // Return the response as JSON
+        // Add values to the response array
+        $response['remaining'] = $row['max'] - $row['dispenced'];
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
 
-            switch($size){
-                case 'regular':
-                    $control_id = 1;
-                    break;
-                case 'large':
-                    $control_id = 2;
-                    break;
-                case 'night':
-                    $control_id = 3;
-                    break;
-                default:
-                    $control_id = 1;
-            }
-            $mysqli->query("UPDATE control SET dispenced=dispenced+1 WHERE id=$control_id");
-        }
-        ?>
-        <script src="" async defer></script>
-    </body>
-</html>
+    if($response['remaining']-$qty >= 0){
+        $mysqli->query("INSERT INTO transactions (
+            id,
+            size,	
+            qty,	
+            payment) 
+            VALUES (
+            '$id',
+            '$size',	
+            $qty,	
+            '$payment')") or die(mysqli_error($mysqli));
+        $mysqli->query("UPDATE control SET dispenced=dispenced+$qty WHERE id=$control_id");
+    }
+}
+?>

@@ -1,28 +1,28 @@
 # app.py
 from flask import Flask, render_template, send_from_directory, jsonify
 import RPi.GPIO as GPIO
-import threading
+from gpiozero import DistanceSensor
 import time
 import os
 import webbrowser
 from mfrc522 import SimpleMFRC522
+import threading
 
 app = Flask(__name__)
 
 # Set up GPIO
-GPIO.setmode(GPIO.BOARD)
-motor_pin_1 = 11
-motor_pin_2 = 37
-motor_pin_3 = 36
-tsop_pin = 32
-rfid_power_pin = 22
+GPIO.setmode(GPIO.BCM)
+motor_pin_1 = 17
+motor_pin_2 = 26
+motor_pin_3 = 16
+ultrasonic = DistanceSensor(echo=12, trigger=4, threshold_distance=0.5)
+rfid_power_pin = 25
 
 GPIO.setwarnings(False)
 GPIO.setup(motor_pin_1, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(motor_pin_2, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(motor_pin_3, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(rfid_power_pin, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(tsop_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 reader = SimpleMFRC522()
 
@@ -31,33 +31,25 @@ def enable_rfid_module():
 
 def disable_rfid_module():
     GPIO.output(rfid_power_pin, GPIO.LOW)
-    
-    
-# Variable to track the display state
-display_is_sleeping = False
-display_sleep_offset = 0
 
-def tsop_sensor_thread():
-	global display_is_sleeping, display_sleep_offset
+def ultrasonic_thread():
 	while True:
-		if GPIO.input(tsop_pin) == GPIO.LOW:
-			if display_is_sleeping:
-				os.system("xset dpms force on")
-				display_is_sleeping = False
-				display_sleep_offset = 0
-				time.sleep(1)
-		else:
-			if not display_is_sleeping and display_sleep_offset > 5:
-				os.system("xset dpms force off")
-				disable_rfid_module()
-				display_is_sleeping = True
-			elif display_sleep_offset <= 5:
-				display_sleep_offset = display_sleep_offset + 1
-				time.sleep(1)
+		ultrasonic.wait_for_in_range()
+		os.system("xset dpms force on")
+		
+		ultrasonic.wait_for_out_of_range()
+		last_out_of_range_time = time.time()
 
-# Create and start the TSOP sensor thread
-tsop_thread = threading.Thread(target=tsop_sensor_thread)
-tsop_thread.start()
+		while time.time() - last_out_of_range_time < 5:
+			if ultrasonic.distance < ultrasonic.threshold_distance:
+				last_out_of_range_time = time.time()
+			time.sleep(0.1)
+		
+		os.system("xset dpms force off")
+		disable_rfid_module()
+	    
+ultrasonic_thread = threading.Thread(target=ultrasonic_thread)
+ultrasonic_thread.start()
 
 def read_rfid():
 	try:
@@ -79,6 +71,10 @@ def rfid():
 @app.route("/pay")
 def pay():
     return render_template('pay.html')
+
+@app.route("/outofstock")
+def out_of_stock():
+    return render_template('outofstock.html')
 
 
 @app.route("/css/<path:filename>")

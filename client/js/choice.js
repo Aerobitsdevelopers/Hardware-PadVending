@@ -93,8 +93,10 @@ function dispensePad(size, qty, type, id) {
     fetch(apiUrl, {
         method: 'GET',
     })
-        .then(response => {
-            if (response.ok) {
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.remaining - qty)
+            if (data.remaining - qty >= 0) {
                 switch (size) {
                     case 'regular':
                         xhr.open("GET", "/controlMotor1", true);
@@ -113,7 +115,7 @@ function dispensePad(size, qty, type, id) {
 
                 window.location.href = './';
             } else {
-                console.error('API call failed:', response.status, response.statusText);
+                window.location.href = './outofstock';
             }
         })
         .catch(error => {

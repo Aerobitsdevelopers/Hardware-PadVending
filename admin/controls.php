@@ -30,12 +30,13 @@
              $result = $mysqli->query("SELECT * FROM control");
              while($row = mysqli_fetch_array($result))
              {
+                $percentage =  (int)(($row['dispenced'] / $row['max']) * 100);
                  echo '
                  <div class="control-box">
                     <h2>'.$row['size'].'</h2>
                     <p>Dispenced : '.$row['dispenced'].' / '.$row['max'].'</p>
                     <div class="circle">
-                        <div class="progress-bar" data-width = "'.$row['dispenced'].'">
+                        <div class="progress-bar" data-width = "'.$percentage.'">
                             <progress min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
                         </div>
                     </div>
