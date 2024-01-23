@@ -125,6 +125,10 @@ main {
     flex-direction: column;
 }
 
+.control-box form {
+    width: 100%;
+}
+
 .control-box button {
     width: 100%;
     background-color: #0492f6;
@@ -145,4 +149,36 @@ main {
     font-size: 14px;
     font-weight: 400;
     color: #888;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td,
+table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 14px;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #ddd;
+}
+
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #0492f6;
+    color: white;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

@@ -20,36 +20,33 @@
     ?>
     
     <main>
-        <div class="control-box">
-            <h2>Regular</h2>
-            <p>Dispenced : 40 / 100</p>
-            <div class="circle">
-                <div class="progress-bar" data-width = "<?php echo '40';?>">
-                    <progress min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+        <?php
+            if(isset($_POST['reset'])){
+                $id = $_POST['id'];
+                $mysqli->query("UPDATE control SET dispenced=0 WHERE id=$id");
+                header("Location: ".$_SERVER['PHP_SELF']);
+            }
+
+             $result = $mysqli->query("SELECT * FROM control");
+             while($row = mysqli_fetch_array($result))
+             {
+                 echo '
+                 <div class="control-box">
+                    <h2>'.$row['size'].'</h2>
+                    <p>Dispenced : '.$row['dispenced'].' / '.$row['max'].'</p>
+                    <div class="circle">
+                        <div class="progress-bar" data-width = "'.$row['dispenced'].'">
+                            <progress min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
+                        </div>
+                    </div>
+                    <form method="POST">
+                        <input type="number" value="'.$row['id'].'" name="id" hidden/>
+                        <button type="submit" name="reset">Reset</button>
+                    </form>
                 </div>
-            </div>
-            <button>Reset</button>
-        </div>
-        <div class="control-box">
-            <h2>Large</h2>
-            <p>Dispenced : 20 / 100</p>
-            <div class="circle">
-                <div class="progress-bar" data-width = "<?php echo '20';?>">
-                    <progress min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
-                </div>
-            </div>
-            <button>Reset</button>
-        </div>
-        <div class="control-box">
-            <h2>Night</h2>
-            <p>Dispenced : 60 / 100</p>
-            <div class="circle">
-                <div class="progress-bar" data-width = "<?php echo '60';?>">
-                    <progress min="0" max="100" style="visibility:hidden;height:0;width:0;"></progress>
-                </div>
-            </div>
-            <button>Reset</button>
-        </div>
+                 ';
+             }
+        ?>
     </main>
     
 

@@ -28,6 +28,21 @@
                 '$size',	
                 $qty,	
                 '$payment')") or die(mysqli_error($mysqli));
+
+            switch($size){
+                case 'regular':
+                    $control_id = 1;
+                    break;
+                case 'large':
+                    $control_id = 2;
+                    break;
+                case 'night':
+                    $control_id = 3;
+                    break;
+                default:
+                    $control_id = 1;
+            }
+            $mysqli->query("UPDATE control SET dispenced=dispenced+1 WHERE id=$control_id");
         }
         ?>
         <script src="" async defer></script>
