@@ -20,4 +20,16 @@
         <div class="icon"><i class="fas fa-server"></i></div>
         <p>Transactions</p>
     </a>
+    <a class="container <?php if($page == 'cards'){echo 'active';}?>" href="cards.php">
+        <div class="icon"><i class="far fa-credit-card"></i></div>
+        <p>Cards</p>
+    </a>
+    <a class="container <?php if($page == 'add'){echo 'active';}?>" href="add.php">
+        <div class="icon"><i class="fas fa-plus"></i></div>
+        <p>Add Card</p>
+    </a>
+    <a class="container <?php if($page == 'recharge'){echo 'active';}?>" href="recharge.php">
+        <div class="icon"><i class="fas fa-bolt"></i></div>
+        <p>Recharge Card</p>
+    </a>
 </div>

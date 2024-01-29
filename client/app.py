@@ -16,21 +16,13 @@ motor_pin_1 = 17
 motor_pin_2 = 26
 motor_pin_3 = 16
 ultrasonic = DistanceSensor(echo=12, trigger=4, threshold_distance=0.5)
-rfid_power_pin = 25
 
 GPIO.setwarnings(False)
 GPIO.setup(motor_pin_1, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(motor_pin_2, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(motor_pin_3, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(rfid_power_pin, GPIO.OUT, initial=GPIO.LOW)
 
 reader = SimpleMFRC522()
-
-def enable_rfid_module():
-    GPIO.output(rfid_power_pin, GPIO.HIGH)
-
-def disable_rfid_module():
-    GPIO.output(rfid_power_pin, GPIO.LOW)
 
 def ultrasonic_thread():
 	while True:
@@ -46,19 +38,9 @@ def ultrasonic_thread():
 			time.sleep(0.1)
 		
 		os.system("xset dpms force off")
-		disable_rfid_module()
 	    
 ultrasonic_thread = threading.Thread(target=ultrasonic_thread)
 ultrasonic_thread.start()
-
-def read_rfid():
-	try:
-		# Read the RFID tag
-		id, rfid_text = reader.read()
-		return id, rfid_text
-	except Exception as e:
-		print(f"Error reading RFID: {e}")
-		return None, None
 	
 @app.route("/")
 def index():
@@ -92,22 +74,16 @@ def scan_RFID():
 	try:
 		print("Waiting for RFID scan...")
 		id, rfid_text = None, None
-		# Enable RFID module before scanning
-		enable_rfid_module()
 
 		while id is None:
 			id, rfid_text = read_rfid()
 			time.sleep(0.1)
 		print(id, rfid_text)
 
-		# Disable RFID module after scanning
-		disable_rfid_module()
 		# Return the id and rfid_text as JSON
 		return jsonify(id=id, rfid_text=rfid_text)
 
 	except Exception as e:
-		# Disable RFID module in case of an error
-		disable_rfid_module()
 		return jsonify(error=str(e))
 		
 @app.route("/controlMotor1")

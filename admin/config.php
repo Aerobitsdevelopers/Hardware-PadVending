@@ -2,10 +2,10 @@
     define('BASE_PATH','http://localhost/api_padvending/');
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'api_padvending');
-    // define('DB_USER','root');
-    // define('DB_PASSWORD','');
-    define('DB_USER','padVending');
-    define('DB_PASSWORD','U7n(QIER737.');
+    define('DB_USER','root');
+    define('DB_PASSWORD','');
+    // define('DB_USER','padVending');
+    // define('DB_PASSWORD','U7n(QIER737.');
     
     date_default_timezone_set("Asia/Kolkata");
     $mysqli=new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);

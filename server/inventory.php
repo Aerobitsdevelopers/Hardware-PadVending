@@ -42,6 +42,10 @@ if(isset($_GET['size']) && isset($_GET['qty']) && isset($_GET['payment'])){
             $qty,	
             '$payment')") or die(mysqli_error($mysqli));
         $mysqli->query("UPDATE control SET dispenced=dispenced+$qty WHERE id=$control_id");
+        if(explode($payment, "_")[0] === 'rfid'){
+            $card_id = explode($payment, "_")[1];
+            $mysqli->query("UPDATE cards SET balance=balance-$qty WHERE card_no='$card_id' IF EXISTS");
+        }
     }
 }
 ?>
